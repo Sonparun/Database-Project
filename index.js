@@ -2,10 +2,10 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const app = express();
 
-const db = new sqlite3.Database('./Database/data.sqlite');
+const db = new sqlite3.Database('./Database/Animal.sqlite');
 
 app.use(express.json());
-app.use(express.static(__dirname + '/Myproject'));
+// app.use(express.static(__dirname + '/Myproject'));
 
 // สร้างตาราง Habitat of Animal
 db.run(`CREATE TABLE IF NOT EXISTS HabitatOfAnimal (
@@ -18,7 +18,7 @@ db.run(`CREATE TABLE IF NOT EXISTS Animal (
     ID INTEGER PRIMARY KEY,
     Name TEXT,
     Data TEXT,
-    Pic VARCHAR
+    Pic TEXT
 )`);
 
 // สร้างตาราง Habitat
@@ -26,7 +26,7 @@ db.run(`CREATE TABLE IF NOT EXISTS Habitat (
     ID INTEGER PRIMARY KEY,
     Name TEXT,
     Data TEXT,
-    Pic VARCHAR
+    Pic TEXT
 )`);
 
 // CRUD สำหรับ HabitatOfAnimal
@@ -205,4 +205,7 @@ app.delete('/Habitat/:id', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server is running on port http://localhost:${port}`));
+app.listen(port, () => {
+  console.log(`Listening on port ${port}...`);
+});
+
