@@ -2,36 +2,36 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const app = express();
 
-const db = new sqlite3.Database('./Database/Animal.sqlite');
+const db = new sqlite3.Database('./Database/Movie.sqlite');
 
 app.use(express.json());
 // app.use(express.static(__dirname + '/Myproject'));
 
-// สร้างตาราง Habitat of Animal
-db.run(`CREATE TABLE IF NOT EXISTS HabitatOfAnimal (
-    AnimalID TEXT PRIMARY KEY,
-    HabitatID TEXT
+// สร้างตาราง Movie And Country
+db.run(`CREATE TABLE IF NOT EXISTS MovieAndCountry (
+    MovieID TEXT PRIMARY KEY,
+    CountryID TEXT
 )`);
 
-// สร้างตาราง Animal
-db.run(`CREATE TABLE IF NOT EXISTS Animal (
+// สร้างตาราง Movie
+db.run(`CREATE TABLE IF NOT EXISTS Movie (
     ID INTEGER PRIMARY KEY,
     Name TEXT,
     Data TEXT,
     Pic TEXT
 )`);
 
-// สร้างตาราง Habitat
-db.run(`CREATE TABLE IF NOT EXISTS Habitat (
+// สร้างตาราง Country
+db.run(`CREATE TABLE IF NOT EXISTS Country (
     ID INTEGER PRIMARY KEY,
     Name TEXT,
     Data TEXT,
     Pic TEXT
 )`);
 
-// CRUD สำหรับ HabitatOfAnimal
-app.get('/HabitatOfAnimal', (req, res) => {
-    db.all('SELECT * FROM HabitatOfAnimal', (err, rows) => {
+// CRUD สำหรับ MovieAndCountry
+app.get('/MovieAndCountry', (req, res) => {
+    db.all('SELECT * FROM MovieAndCountry', (err, rows) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -40,13 +40,13 @@ app.get('/HabitatOfAnimal', (req, res) => {
     });
 });
 
-app.get('/HabitatOfAnimal/:id', (req, res) => {
-    db.get('SELECT * FROM HabitatOfAnimal WHERE AnimalID = ?', req.params.id, (err, row) => {
+app.get('/MovieAndCountry/:id', (req, res) => {
+    db.get('SELECT * FROM MovieAndCountry WHERE MovieID = ?', req.params.id, (err, row) => {
         if (err) {
             res.status(500).send(err);
         } else {
             if (!row) {
-                res.status(404).send('HabitatOfAnimal Not found');
+                res.status(404).send('MovieAndCountry Not found');
             } else {
                 res.json(row);
             }
@@ -54,31 +54,31 @@ app.get('/HabitatOfAnimal/:id', (req, res) => {
     });
 });
 
-app.post('/HabitatOfAnimal', (req, res) => {
-    const habitatOfAnimal = req.body;
-    db.run('INSERT INTO HabitatOfAnimal (AnimalID, HabitatID) VALUES (?, ?)', habitatOfAnimal.AnimalID, habitatOfAnimal.HabitatID, function (err) {
+app.post('/MovieAndCountry', (req, res) => {
+    const MovieAndCountry = req.body;
+    db.run('INSERT INTO MovieAndCountry (MovieID, CountryID) VALUES (?, ?)', MovieAndCountry.MovieID, MovieAndCountry.CountryID, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
-            habitatOfAnimal.AnimalID = this.lastID;
-            res.send(habitatOfAnimal);
+            MovieAndCountry.MovieID = this.lastID;
+            res.send(MovieAndCountry);
         }
     });
 });
 
-app.put('/HabitatOfAnimal/:id', (req, res) => {
-    const habitatOfAnimal = req.body;
-    db.run('UPDATE HabitatOfAnimal SET AnimalID = ?, HabitatID = ? WHERE AnimalID = ?', habitatOfAnimal.AnimalID, habitatOfAnimal.HabitatID, req.params.id, function (err) {
+app.put('/MovieAndCountry/:id', (req, res) => {
+    const MovieAndCountry = req.body;
+    db.run('UPDATE MovieAndCountry SET MovieID = ?, CountryID = ? WHERE MovieID = ?', MovieAndCountry.MovieID, MovieAndCountry.CountryID, req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.send(habitatOfAnimal);
+            res.send(MovieAndCountry);
         }
     });
 });
 
-app.delete('/HabitatOfAnimal/:id', (req, res) => {
-    db.run('DELETE FROM HabitatOfAnimal WHERE AnimalID = ?', req.params.id, function (err) {
+app.delete('/MovieAndCountry/:id', (req, res) => {
+    db.run('DELETE FROM MovieAndCountry WHERE MovieID = ?', req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -87,9 +87,9 @@ app.delete('/HabitatOfAnimal/:id', (req, res) => {
     });
 });
 
-// CRUD สำหรับ Animal
-app.get('/Animal', (req, res) => {
-    db.all('SELECT * FROM Animal', (err, rows) => {
+// CRUD สำหรับ Movie
+app.get('/Movie', (req, res) => {
+    db.all('SELECT * FROM Movie', (err, rows) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -98,13 +98,13 @@ app.get('/Animal', (req, res) => {
     });
 });
 
-app.get('/Animal/:id', (req, res) => {
-    db.get('SELECT * FROM Animal WHERE ID = ?', req.params.id, (err, row) => {
+app.get('/Movie/:id', (req, res) => {
+    db.get('SELECT * FROM Movie WHERE ID = ?', req.params.id, (err, row) => {
         if (err) {
             res.status(500).send(err);
         } else {
             if (!row) {
-                res.status(404).send('Animal Not found');
+                res.status(404).send('Movie Not found');
             } else {
                 res.json(row);
             }
@@ -112,32 +112,32 @@ app.get('/Animal/:id', (req, res) => {
     });
 });
 
-app.post('/Animal', (req, res) => {
-    const animal = req.body;
-    db.run('INSERT INTO Animal (Name, Data, Pic) VALUES (?, ?, ?)', animal.Name, animal.Data, animal.Pic, function (err) {
+app.post('/Movie', (req, res) => {
+    const Movie = req.body;
+    db.run('INSERT INTO Movie (Name, Data, Pic) VALUES (?, ?, ?)', Movie.Name, Movie.Data, Movie.Pic, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
-            animal.ID = this.lastID;
-            res.send(animal);
+            Movie.ID = this.lastID;
+            res.send(Movie);
         }
     });
 
 });
 
-app.put('/Animal/:id', (req, res) => {
-    const animal = req.body;
-    db.run('UPDATE Animal SET Name = ?, Data = ?, Pic = ? WHERE ID = ?', animal.Name, animal.Data, animal.Pic, req.params.id, function (err) {
+app.put('/Movie/:id', (req, res) => {
+    const Movie = req.body;
+    db.run('UPDATE Movie SET Name = ?, Data = ?, Pic = ? WHERE ID = ?', Movie.Name, Movie.Data, Movie.Pic, req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.send(animal);
+            res.send(Movie);
         }
     });
 });
 
-app.delete('/Animal/:id', (req, res) => {
-    db.run('DELETE FROM Animal WHERE ID = ?', req.params.id, function (err) {
+app.delete('/Movie/:id', (req, res) => {
+    db.run('DELETE FROM Movie WHERE ID = ?', req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -146,9 +146,9 @@ app.delete('/Animal/:id', (req, res) => {
     });
 });
 
-// CRUD สำหรับ Habitat
-app.get('/Habitat', (req, res) => {
-    db.all('SELECT * FROM Habitat', (err, rows) => {
+// CRUD สำหรับ Country
+app.get('/Country', (req, res) => {
+    db.all('SELECT * FROM Country', (err, rows) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -157,13 +157,13 @@ app.get('/Habitat', (req, res) => {
     });
 });
 
-app.get('/Habitat/:id', (req, res) => {
-    db.get('SELECT * FROM Habitat WHERE ID = ?', req.params.id, (err, row) => {
+app.get('/Country/:id', (req, res) => {
+    db.get('SELECT * FROM Country WHERE ID = ?', req.params.id, (err, row) => {
         if (err) {
             res.status(500).send(err);
         } else {
             if (!row) {
-                res.status(404).send('Habitat Not found');
+                res.status(404).send('Country Not found');
             } else {
                 res.json(row);
             }
@@ -171,31 +171,31 @@ app.get('/Habitat/:id', (req, res) => {
     });
 });
 
-app.post('/Habitat', (req, res) => {
-    const habitat = req.body;
-    db.run('INSERT INTO Habitat (Name, Data, Pic) VALUES (?, ?, ?)', habitat.Name, habitat.Data, habitat.Pic, function (err) {
+app.post('/Country', (req, res) => {
+    const Country = req.body;
+    db.run('INSERT INTO Country (Name, Data, Pic) VALUES (?, ?, ?)', Country.Name, Country.Data, Country.Pic, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
-            habitat.ID = this.lastID;
-            res.send(habitat);
+            Country.ID = this.lastID;
+            res.send(Country);
         }
     });
 });
 
-app.put('/Habitat/:id', (req, res) => {
-    const habitat = req.body;
-    db.run('UPDATE Habitat SET Name = ?, Data = ?, Pic = ? WHERE ID = ?', habitat.Name, habitat.Data, habitat.Pic, req.params.id, function (err) {
+app.put('/Country/:id', (req, res) => {
+    const Country = req.body;
+    db.run('UPDATE Country SET Name = ?, Data = ?, Pic = ? WHERE ID = ?', Country.Name, Country.Data, Country.Pic, req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.send(habitat);
+            res.send(Country);
         }
     });
 });
 
-app.delete('/Habitat/:id', (req, res) => {
-    db.run('DELETE FROM Habitat WHERE ID = ?', req.params.id, function (err) {
+app.delete('/Country/:id', (req, res) => {
+    db.run('DELETE FROM Country WHERE ID = ?', req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
