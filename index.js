@@ -9,7 +9,8 @@ app.use(express.json());
 
 // สร้างตาราง Movie And Country
 db.run(`CREATE TABLE IF NOT EXISTS MovieAndCountry (
-    MovieID TEXT PRIMARY KEY,
+    ID INTEGER PRIMARY KEY,
+    MovieID TEXT,
     CountryID TEXT
 )`);
 
@@ -41,7 +42,7 @@ app.get('/MovieAndCountry', (req, res) => {
 });
 
 app.get('/MovieAndCountry/:id', (req, res) => {
-    db.get('SELECT * FROM MovieAndCountry WHERE MovieID = ?', req.params.id, (err, row) => {
+    db.get('SELECT * FROM MovieAndCountry WHERE ID = ?', req.params.id, (err, row) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -60,7 +61,7 @@ app.post('/MovieAndCountry', (req, res) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            MovieAndCountry.MovieID = this.lastID;
+            MovieAndCountry.ID = this.lastID;
             res.send(MovieAndCountry);
         }
     });
@@ -68,7 +69,7 @@ app.post('/MovieAndCountry', (req, res) => {
 
 app.put('/MovieAndCountry/:id', (req, res) => {
     const MovieAndCountry = req.body;
-    db.run('UPDATE MovieAndCountry SET MovieID = ?, CountryID = ? WHERE MovieID = ?', MovieAndCountry.MovieID, MovieAndCountry.CountryID, req.params.id, function (err) {
+    db.run('UPDATE MovieAndCountry SET MovieID = ?, CountryID = ? WHERE ID = ?', MovieAndCountry.MovieID, MovieAndCountry.CountryID, req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -78,7 +79,7 @@ app.put('/MovieAndCountry/:id', (req, res) => {
 });
 
 app.delete('/MovieAndCountry/:id', (req, res) => {
-    db.run('DELETE FROM MovieAndCountry WHERE MovieID = ?', req.params.id, function (err) {
+    db.run('DELETE FROM MovieAndCountry WHERE ID = ?', req.params.id, function (err) {  
         if (err) {
             res.status(500).send(err);
         } else {
