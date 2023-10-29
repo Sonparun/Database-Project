@@ -5,7 +5,6 @@ const app = express();
 const db = new sqlite3.Database('./Database/Movie.sqlite');
 
 app.use(express.json());
-// app.use(express.static(__dirname + '/Myproject'));
 
 // สร้างตาราง Movie And Country
 db.run(`CREATE TABLE IF NOT EXISTS MovieAndCountry (
